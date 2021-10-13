@@ -7,44 +7,28 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Controller
 {
-  public interface IResponse<T>
-  {
-    string status { get; }
-    T data { get; }
-  }
-  public class Response<T> : IResponse<T>
-  {
-    public Response(string status, T data)
+    public record Response<T>(string status, T data);
+
+    [ApiController]
+    [Authorize]
+    [Route("/api/[controller]")]
+    public class AssetController : ControllerBase
     {
-      this.status = status;
-      this.data = data;
+        public ILogger<AssetController> logger { get; }
+        public IAssetFileService assetsFileService { get; }
+
+        public AssetController(ILogger<AssetController> logger, IAssetFileService assetsFileService)
+        {
+            this.logger = logger;
+            this.assetsFileService = assetsFileService;
+        }
+
+        [HttpPost]
+        public async Task<Response<string>> PostAsync([FromBody] IFormFile image)
+        {
+            await assetsFileService.StoreAsset(image);
+
+            return new Response<string>("success", "success");
+        }
     }
-    public string status { get; }
-    public T data { get; }
-  }
-
-
-  [ApiController]
-  [Authorize]
-  [Route("/api/[controller]")]
-  public class AssetController : ControllerBase
-  {
-    public ILogger<AssetController> logger { get; }
-    public IAssetFileService assetsFileService { get; }
-
-    public AssetController(ILogger<AssetController> logger, IAssetFileService assetsFileService)
-    {
-      this.logger = logger;
-      this.assetsFileService = assetsFileService;
-    }
-
-
-    [HttpPost]
-    public async Task<IResponse<string>> Post([FromBody] IFormFile image)
-    {
-      await assetsFileService.storeAsset(image);
-
-      return new Response<string>("success", "success");
-    }
-  }
 }

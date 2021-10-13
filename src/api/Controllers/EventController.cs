@@ -17,13 +17,13 @@ namespace dotnet.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly IEventRepository _eventRepository;
-        private readonly IMapper _mapper;
+        private readonly IEventRepository eventRepository;
+        private readonly IMapper mapper;
 
         public EventController(IEventRepository eventRepository, IMapper mapper)
         {
-            _mapper = mapper;
-            _eventRepository = eventRepository;
+            this.mapper = mapper;
+            this.eventRepository = eventRepository;
         }
 
         [HttpGet("all")]
@@ -37,11 +37,11 @@ namespace dotnet.Controllers
         public async Task<ActionResult<DtoEvent>> GetEventByID(string eventID)
         {
 
-            if (_eventRepository.EventExists(eventID))
+            if (eventRepository.EventExists(eventID))
             {
-                var dbEvent = await _eventRepository.GetEventAsync(eventID);
+                var dbEvent = await eventRepository.GetEventAsync(eventID);
 
-                return _mapper.Map<DtoEvent>(dbEvent);
+                return mapper.Map<DtoEvent>(dbEvent);
             }
             else
             {
@@ -55,9 +55,9 @@ namespace dotnet.Controllers
 
             if (ModelState.IsValid)
             {
-                if (!_eventRepository.EventExists(e.ID))
-                {   var dbEvent = _mapper.Map<DbEvent>(e);
-                    await _eventRepository.AddEventAsync(dbEvent);
+                if (!eventRepository.EventExists(e.ID))
+                {   var dbEvent = mapper.Map<DbEvent>(e);
+                    await eventRepository.AddEventAsync(dbEvent);
                     return Ok();
                 }
                 else
@@ -73,8 +73,8 @@ namespace dotnet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbEvent = _mapper.Map<DbEvent>(e);
-                await _eventRepository.EditEventAsync(dbEvent);
+                var dbEvent = mapper.Map<DbEvent>(e);
+                await eventRepository.EditEventAsync(dbEvent);
                 return Ok();
             }
             return BadRequest();
@@ -84,9 +84,9 @@ namespace dotnet.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteEvent(string eventID)
         {
-            if (_eventRepository.EventExists(eventID))
+            if (eventRepository.EventExists(eventID))
             {
-                 await _eventRepository.DeleteEventAsync(eventID);
+                 await eventRepository.DeleteEventAsync(eventID);
                 return Ok();
             }
             else
