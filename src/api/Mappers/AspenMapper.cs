@@ -16,6 +16,9 @@ namespace Aspen.Api.Mappers
             CreateMap<DtoEvent, DbEvent>();
             CreateMap<DbPageData, DtoPageData>();
             CreateMap<DtoPageData, DbPageData>();
+            CreateMap<DbTeam, DtoTeam>();
+            CreateMap<DtoTeam, DbTeam>();
+            CreateMap<IEnumerable<DbTeam>, IEnumerable<DtoTeam>>();
             CreateMap<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>();
         }
     }

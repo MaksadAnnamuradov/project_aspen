@@ -29,10 +29,9 @@ namespace dotnet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(EventMapper));
-            services.AddAutoMapper(typeof(TeamMapper));
+            services.AddAutoMapper(typeof(AspenMapper));
 
-            services.AddDbContext<AspenContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
+            services.AddDbContext<AspenContext>(options => options.UseNpgsql("LOCAL_DATABASE_URL"));
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddAuthentication(options =>
