@@ -29,8 +29,8 @@ namespace dotnet.Controllers
         [HttpGet("all")]
         public async Task<IEnumerable<DtoEvent>> GetAllEvents()
         {
-            var events =  await _eventRepository.GetEventsAsync();
-            return _mapper.Map<IEnumerable<DtoEvent>>(events);
+            var events =  await eventRepository.GetEventsAsync();
+            return mapper.Map<IEnumerable<DtoEvent>>(events);
         }
 
         [HttpGet]
