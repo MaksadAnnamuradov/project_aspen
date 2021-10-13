@@ -14,6 +14,7 @@ namespace Aspen.Api.Mappers
         {
             CreateMap<DbEvent, DtoEvent>();
             CreateMap<DtoEvent, DbEvent>();
+            CreateMap<IEnumerable<DbEvent>, IEnumerable<DtoEvent>>();
         }
     }
 }

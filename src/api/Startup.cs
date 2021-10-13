@@ -29,8 +29,11 @@ namespace dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(EventMapper));
+            services.AddAutoMapper(typeof(TeamMapper));
+
             services.AddDbContext<AspenContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["LOCAL_DATABASE_URL"])));
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddAuthentication(options =>
       {
           options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

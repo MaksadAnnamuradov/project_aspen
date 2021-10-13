@@ -26,11 +26,12 @@ namespace dotnet.Controllers
             _eventRepository = eventRepository;
         }
 
-        /*[HttpGet("getall")]
+        [HttpGet("all")]
         public async Task<IEnumerable<DtoEvent>> GetAllEvents()
         {
-            return await _eventRepository.GetEventsAsync();
-        }*/
+            var events =  await _eventRepository.GetEventsAsync();
+            return _mapper.Map<IEnumerable<DtoEvent>>(events);
+        }
 
         [HttpGet]
         public async Task<ActionResult<DtoEvent>> GetEventByID(string eventID)
