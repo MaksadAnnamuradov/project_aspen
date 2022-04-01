@@ -13,7 +13,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: 
-      name: Sergio
+      name: sergio
     steps:
       - uses: actions/checkout@v3
       
