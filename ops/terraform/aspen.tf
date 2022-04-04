@@ -38,8 +38,8 @@ resource "azurerm_postgresql_server" "api" {
   resource_group_name              = azurerm_resource_group.aspenrg.name
   location                         = azurerm_resource_group.aspenrg.location
   version                          = "11"
-  administrator_login              = var.keycloak_dbuser
-  administrator_login_password     = var.keycloak_dbpassword
+  administrator_login              = var.api_dbuser
+  administrator_login_password     = var.api_dbpassword
   sku_name                         = "B_Gen5_1"
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
@@ -73,19 +73,27 @@ resource "azurerm_linux_web_app" "api_appservice" {
   site_config {
     app_command_line = ""
     always_on        = true
+    health_check_path = "/health"
     application_stack {
       dotnet_version = "6.0"
     }
   }
-  connection_string {
-    name        = "ASPEN_CONNECTION_STRING"
-    value       = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}; password=${var.api_dbpassword}};"
-    type        = "PostgreSQL"
-  }
   app_settings = {
-    ASPNETCOREURLS            = "https://aspen-api-${random_id.id.hex}.azurewebsites.net"
+    ASPNETCOREURLS            = "http://aspen-api-${random_id.id.hex}.azurewebsites.net"
     WEBSITE_WEBDEPLOY_USE_SCM = true
     SwaggerBasePath           = ""
+    ASPEN_CONNECTION_STRING   = "server=${azurerm_postgresql_server.api.name}.postgres.database.azure.com; database=postgres; user id=${var.api_dbuser}@${azurerm_postgresql_server.api.name}.postgres.database.azure.com; password=${var.api_dbpassword};SSL Mode=Require; Trust Server Certificate=true;"
+  }
+  logs {
+    detailed_error_messages = false
+    failed_request_tracing  = false
+
+    http_logs {
+      file_system {
+        retention_in_days = 5
+        retention_in_mb   = 35
+      }
+    }
   }
 }
 
