@@ -83,7 +83,7 @@ resource "azurerm_linux_web_app" "api_appservice" {
     type        = "PostgreSQL"
   }
   app_settings = {
-    ASPNETCOREURLS            = "http://aspen-api-${random_id.id.hex}.azurewebsites.net"
+    ASPNETCOREURLS            = "https://aspen-api-${random_id.id.hex}.azurewebsites.net"
     WEBSITE_WEBDEPLOY_USE_SCM = true
     SwaggerBasePath           = ""
   }
