@@ -12,13 +12,13 @@ public class Program
         using (var scope = host.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AspenContext>();
-            //dumpLogs(scope, db);
+            dumpConfig(scope, db);
             db.Database.Migrate();
         }
         host.Run();
     }
 
-    private static void dumpLogs(IServiceScope scope, AspenContext db)
+    private static void dumpConfig(IServiceScope scope, AspenContext db)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
