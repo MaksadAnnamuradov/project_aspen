@@ -96,9 +96,5 @@ resource "azurerm_linux_web_app_slot" "api_appservice_slot" {
     auto_swap_slot_name = "production"
     health_check_path = "/health"
   }
-<<<<<<< HEAD
-}
-=======
   app_settings = azurerm_linux_web_app.api_appservice.app_settings
 }
->>>>>>> mobile
